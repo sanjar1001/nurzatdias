@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифрование и расшифрование данных</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;   
+            height: 90vh;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #5b5b5b;
+        }
+
+        #result {
+            margin-top: 10px;
+            width: 500px;
+            color: #333;
+            display: inline-block; /* Добавлено для корректного отображения кнопки */
+        }
+
+        #copyBtn {
+            padding: 10px 15px;
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #copyBtn:hover {
+            background-color: #5b5b5b;
+        }
+    </style>
+</head>
+<body>
+        <div class="container">
+        <label for="text">Введите текст:</label>
+        <textarea id="text" rows="4" cols="50"></textarea><br>
+
+        <button onclick="encrypt()">Зашифровать</button>
+        <button onclick="decrypt()">Расшифровать</button>
+
+        <h2>Результат:</h2>
+        <input type="text" id="result" readonly>
+        <button id="copyBtn" onclick="copyResult()">Копировать</button>
+
+        <script>
+            var alphabet = {
+                'А': '@', 'Б': '#', 'В': '$', 'Г': '%', 'Д': '^', 'Е': '&', 'Ё': '*', 'Ж': '(',
+                'З': ')', 'И': '!', 'Й': '?', 'К': '+', 'Л': '=', 'М': '[', 'Н': ']', 'О': '{',
+                'П': '}', 'Р': '|', 'С': ';', 'Т': ':', 'У': ',', 'Ф': '.', 'Х': '<', 'Ц': '>',
+                'Ч': '/', 'Ш': '_', 'Щ': '`', 'Ъ': '~', 'Ы': '€', 'Ь': '£', 'Э': '¥', 'Ю': '¤',
+                'Я': '§', ' ': '°'  // пример знаков, замените на нужные
+            };
+        
+            function encrypt() {
+                var inputText = document.getElementById("text").value.toUpperCase();
+                var encryptedText = "";
+        
+                for (var i = 0; i < inputText.length; i++) {
+                    var char = inputText.charAt(i);
+                    if (alphabet[char] !== undefined) {
+                        encryptedText += alphabet[char] + " ";
+                    } else {
+                        encryptedText += char;
+                    }
+                }
+        
+                document.getElementById("result").value = encryptedText.trim();
+            }
+        
+            function decrypt() {
+                var inputText = document.getElementById("text").value.split(" ");
+                var decryptedText = "";
+        
+                for (var i = 0; i < inputText.length; i++) {
+                    var code = inputText[i];
+                    var char = findCharByCode(code);
+                    decryptedText += char !== undefined ? char : code;
+                }
+        
+                document.getElementById("result").value = decryptedText.trim();
+            }
+        
+            function findCharByCode(code) {
+                for (var key in alphabet) {
+                    if (alphabet[key] === code) {
+                        return key;
+                    }
+                }
+                return undefined;
+            }
+
+            function copyResult() {
+                var resultInput = document.getElementById("result");
+                resultInput.select();
+                document.execCommand("copy");
+            }
+        </script>
+    </div>
+</body>
+</html>
